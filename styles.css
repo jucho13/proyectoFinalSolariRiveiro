@@ -1,0 +1,45 @@
+/* body {
+    padding-top: 80px; /* ajusta según la altura de tu navbar */
+/* } */ */
+
+img{
+    max-width: 100%;
+}
+
+/* Header */
+header{
+    display: flex;
+    justify-content: space-between;
+    padding: 30px 0 40px 0;
+}
+
+.container-icon{
+    position: relative;
+}
+/* .navbar-text
+{
+    padding-left: 930px;
+    
+} */
+#carritoNavBar
+{
+    color: black;
+    font-size: 40px;
+}
+  
+
+  
+/* #container-items {
+    display: flex;
+    flex-wrap: wrap;
+    width: 600rem;
+} */
+  
+.card {
+    margin-right: 20px;
+    margin-bottom: 20px;
+    width: 600rem;
+}
+   
+  
+  
