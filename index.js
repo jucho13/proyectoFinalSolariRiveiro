@@ -315,7 +315,7 @@ function mostrarTotal(total) {
                         <li class="list-group-item">Apodo: ${carrito[i].apodo}</li>
                         <li class="list-group-item">${carrito[i].casaDeHogwarts}</li>
                         <li class="list-group-item">Cantidad = ${carrito[i].cantidad}</li>
-                        <li class="list-group-item">Subtotal = ${carrito[i].cantidad * 1000}</li>
+                        <li class="list-group-item">Subtotal = ${carrito[i].cantidad *1000}</li>
                     </ul>
                 </div>
             `;
