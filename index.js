@@ -154,7 +154,7 @@
 //     });
 // totalFuncion(total,bodyContainer);
 // }
-// const url = "https://harry-potter-api.onrender.com/personajes"
+
 
 // fetch(url)
 //     .then((res) => res.json())
@@ -241,90 +241,144 @@
 //         this.cantidad = this.cantidad + 1 
 //     }
 // }
-const url = "https://harry-potter-api.onrender.com/personajes";
+const url = "https://harry-potter-api.onrender.com/personajes"
 const containerCards = document.querySelector("#cards");
-fetch(url)
-  .then((res) => res.json())
-  .then((personajes) => {
-    console.log(personajes);
-    personajes.forEach((element) => {
-      const card = document.createElement("div");
-      card.innerHTML = `
-        <div class="card col-4" style="width: 18rem;">
-          <img src="${element.imagen}" class="card-img-top" alt="${element.apodo}">
-          <div class="card-body">
-            <h5 class="card-title">${element.personaje}</h5>
-            <p class="card-text">${element.interpretado_por}</p>
-          </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">Apodo: ${element.apodo}</li>
-            <li class="list-group-item">${element.casaDeHogwarts}</li>
-            <li class="list-group-item">Precio $1000</li>
-          </ul>
-          <div class="card-body">
-            <button type="button" id="btnCompra${element.id}" class="btn btn-primary">Comprar</button>
-          </div>
-        </div>
-      `;
-      containerCards.append(card);
-      const boton = document.querySelector(`#btnCompra${element.id}`);
-      boton.onclick = () => {
-        agregaCarrito(element);
-      };
-    });
+
+for(let i=0; i<=22;i++) {
+  fetch(url)
+    .then((res) => res.json())
+    .then(data => mostrarPersonajes(data,i));
+}
+
+function mostrarPersonajes(data,i) {
+  const div=document.createElement("div");
+  div.classList.add("personaje");
+  div.innerHTML=`
+  <div class="card col-4" style="width: 18rem;">
+    <img src="${data[i].imagen}" class="card-img-top" alt="${data[i].apodo}">
+    <div class="card-body">
+      <h5 class="card-title">${data[i].personaje}</h5>
+      <p class="card-text">${data[i].interpretado_por}</p>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">Apodo: ${data[i].apodo}</li>
+      <li class="list-group-item">${data[i].casaDeHogwarts}</li>
+      <li class="list-group-item">Precio $1000</li>
+    </ul>
+    <div class="card-body">
+      <button type="button" id="btnCompra${data[i].id}" class="btn-primary">Comprar</button>
+    </div>
+  </div>
+  `;
+  containerCards.append(div);
+
+  // Agrega el evento click al botón dentro de cada elemento creado
+  const boton = document.querySelector(`#btnCompra${data[i].id}`);
+  boton.addEventListener("click", () => {
+    agregaCarrito(data[i]);
   });
+}
+
 const carrito = [];
-console.log(carrito);
-class ObjCarrito{
-        constructor(id, cant){
-            this.id = id; 
-            this.cantidad = cant;
-        }
-        sumaStock(){
-            this.cantidad = this.cantidad + 1 
-        }
-    }
 
+class ObjCarrito {
+  constructor(id, cant) {
+    this.id = id;
+    this.cantidad = cant;
+  }
 
+  sumaStock() {
+    this.cantidad = this.cantidad + 1;
+  }
+}
 
 function agregaCarrito(item) {
   let existeEnCarrito = carrito.find((x) => x.id == item.id);
-  const index = carrito.findIndex((x) => x.id === item.id);
-  if (index != carrito) {
-    carrito[index].cantidad++;
+  console.log(existeEnCarrito);
+  const index = carrito.findIndex((x) => x.id == item.id);
+  if (existeEnCarrito != undefined) {
+    carrito[index].sumaStock();
   } else {
     carrito.push(new ObjCarrito(item.id, 1));
   }
+  console.table(carrito);
+}function calcularTotalCarrito() {
+  let total = 0;
+  carrito.forEach(item => {
+    total += item.cantidad * 1000;
+  });
+  return total;
 }
-mostrarTotal();
-function mostrarTotal() {
-    container.innerHTML = "";
-    let subtotal = 0;
-    let total =0;
-    for (let i = 0; i < carrito.length; i++) {
-        if (carrito[i].cantidad > 0) {
-            const card = document.createElement("div");
-            card.innerHTML = `
-                <div class="card col-4" style="width: 18rem;">
-                  <img src="${carrito[i].imagen}" class="card-img-top" alt="${carrito[i].apodo}">
-                  <div class="card-body">
-                    <h5 class="card-title">${carrito[i].personaje}</h5>
-                    <p class="card-text">${carrito[i].interpretado_por}</p>
-                  </div>
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Apodo: ${carrito[i].apodo}</li>
-                    <li class="list-group-item">${carrito[i].casaDeHogwarts}</li>
-                    <li class="list-group-item">Cantidad = ${carrito[i].cantidad}</li>
-                    <li class="list-group-item">Subtotal = ${carrito[i].cantidad *1000}</li>
-                  </ul>
-                </div>
-            `;
-            container.append(card);
-            subtotal += carrito[i].cantidad * 1000;
-        }
-      total=subtotal+total;
-    }
-    const totalCompra = document.createElement("h4");
-    totalCompra.innerText = `El TOTAL de su compra es de ${subtotal}`;
-    container.append(totalCompra);
+const btnCarrito = document.querySelector("#btnClickCarrito");
+const container = document.querySelector("#container-items");
+
+btnCarrito.addEventListener("click", () => {
+  mostrarCarrito();
+});
+
+function mostrarCarrito() {
+  const total = calcularTotalCarrito();
+  container.innerHTML = "";
+  carrito.forEach((item) => {
+    const card = document.createElement("div");
+    card.innerHTML = `
+      <div class="card col-4" style="width: 18rem;">
+        <img src="${item.imagen}" class="card-img-top" alt="${item.apodo}">
+        <div class="card-body">
+          <h5 class="card-title">${item.personaje}</h5>
+          <p class="card-text">${item.interpretado_por}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Apodo: ${item.apodo}</li>
+          <li class="list-group-item">${item.casaDeHogwarts}</li>
+          <li class="list-group-item">Cantidad = ${item.cantidad}</li>
+          <li class="list-group-item">Subtotal = ${item.cantidad * 1000}</li>
+        </ul>
+      </div>
+    `;
+    container.append(card);
+  });
+  const totalCompra = document.createElement("h2");
+  totalCompra.innerText = `El TOTAL de su compra es de ${total}`;
+  container.append(totalCompra);
 }
+
+function calcularTotalCarrito() {
+  let total = 0;
+  carrito.forEach((item) => {
+    total += item.cantidad * 1000;
+  });
+  return total;
+}
+
+
+// let container=document.querySelector("#container-items");
+// btnCarrito=document.querySelector("#btnClickCarrito");
+// // console.log(container);
+// btnCarrito.addEventListener("click", () => {
+//   let total=calcularTotalCarrito();
+//   container.innerHTML="";
+//   for (let i = 0; i < carrito.length; i++) {
+//       const card = document.createElement("div");
+//       card.innerHTML = `
+//           <div class="card col-4" style="width: 18rem;">
+//              <img src="${carrito[i].imagen}" class="card-img-top" alt="${carrito[i].apodo}">
+//             <div class="card-body">
+//               <h5 class="card-title">${carrito[i].personaje}</h5>
+//               <p class="card-text">${carrito[i].interpretado_por}</p>
+//             </div>
+//             <ul class="list-group list-group-flush">
+//               <li class="list-group-item">Apodo: ${carrito[i].apodo}</li>
+//               <li class="list-group-item">${carrito[i].casaDeHogwarts}</li>
+//               <li class="list-group-item">Cantidad = ${carrito[i].cantidad}</li>
+//               <li class="list-group-item">Subtotal = ${carrito[i].cantidad *1000}</li>
+//             </ul>
+//           </div>
+//         `;
+//         container.append(card);
+//     }
+//     const totalCompra = document.createElement("h2");
+//     totalCompra.innerText = `El TOTAL de su compra es de ${total}`;
+//     container.append(totalCompra);
+//   }
+// );
