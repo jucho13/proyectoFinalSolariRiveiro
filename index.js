@@ -241,14 +241,12 @@
 //         this.cantidad = this.cantidad + 1 
 //     }
 // }
-
-// Fetch the data from the API
 const url = "https://harry-potter-api.onrender.com/personajes";
+const containerCards = document.querySelector("#cards");
 fetch(url)
   .then((res) => res.json())
   .then((personajes) => {
-    // Once the data is fetched, loop through each character and create a card
-    const containerCards = document.querySelector("#cards");
+    console.log(personajes);
     personajes.forEach((element) => {
       const card = document.createElement("div");
       card.innerHTML = `
@@ -269,62 +267,64 @@ fetch(url)
         </div>
       `;
       containerCards.append(card);
-
-      // Add an event listener to each "Comprar" button
       const boton = document.querySelector(`#btnCompra${element.id}`);
       boton.onclick = () => {
-        // When a button is clicked, add the character to the cart
         agregaCarrito(element);
       };
     });
   });
-
-// Define a cart array to store the items added to the cart
 const carrito = [];
+console.log(carrito);
+class ObjCarrito{
+        constructor(id, cant){
+            this.id = id; 
+            this.cantidad = cant;
+        }
+        sumaStock(){
+            this.cantidad = this.cantidad + 1 
+        }
+    }
 
-// Define a function to add an item to the cart
+
+
 function agregaCarrito(item) {
-  // Check if the item is already in the cart
+  let existeEnCarrito = carrito.find((x) => x.id == item.id);
   const index = carrito.findIndex((x) => x.id === item.id);
-  if (index !== -1) {
-    // If the item is already in the cart, increment its quantity
+  if (index != carrito) {
     carrito[index].cantidad++;
   } else {
-    // If the item is not in the cart, add it with a quantity of 1
     carrito.push(new ObjCarrito(item.id, 1));
   }
-
-  // Update the cart summary in the UI
-  mostrarTotal();
 }
-
-function mostrarTotal(total) {
+mostrarTotal();
+function mostrarTotal() {
     container.innerHTML = "";
     let subtotal = 0;
+    let total =0;
     for (let i = 0; i < carrito.length; i++) {
         if (carrito[i].cantidad > 0) {
             const card = document.createElement("div");
             card.innerHTML = `
                 <div class="card col-4" style="width: 18rem;">
-                    <img src="${carrito[i].imagen}" class="card-img-top" alt="${carrito[i].apodo}">
-                    <div class="card-body">
-                        <h5 class="card-title">${carrito[i].personaje}</h5>
-                        <p class="card-text">${carrito[i].interpretado_por}</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Apodo: ${carrito[i].apodo}</li>
-                        <li class="list-group-item">${carrito[i].casaDeHogwarts}</li>
-                        <li class="list-group-item">Cantidad = ${carrito[i].cantidad}</li>
-                        <li class="list-group-item">Subtotal = ${carrito[i].cantidad *1000}</li>
-                    </ul>
+                  <img src="${carrito[i].imagen}" class="card-img-top" alt="${carrito[i].apodo}">
+                  <div class="card-body">
+                    <h5 class="card-title">${carrito[i].personaje}</h5>
+                    <p class="card-text">${carrito[i].interpretado_por}</p>
+                  </div>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Apodo: ${carrito[i].apodo}</li>
+                    <li class="list-group-item">${carrito[i].casaDeHogwarts}</li>
+                    <li class="list-group-item">Cantidad = ${carrito[i].cantidad}</li>
+                    <li class="list-group-item">Subtotal = ${carrito[i].cantidad *1000}</li>
+                  </ul>
                 </div>
             `;
             container.append(card);
             subtotal += carrito[i].cantidad * 1000;
         }
+      total=subtotal+total;
     }
     const totalCompra = document.createElement("h4");
     totalCompra.innerText = `El TOTAL de su compra es de ${subtotal}`;
     container.append(totalCompra);
 }
-
