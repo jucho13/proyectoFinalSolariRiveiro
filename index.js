@@ -291,16 +291,23 @@ class ObjCarrito {
     this.cantidad = this.cantidad + 1;
   }
 }
-
+const carritoNavBar=document.querySelector("#carritoNavBar");
+const btnClickCarrito=document.querySelector("#btnClickCarrito");
 function agregaCarrito(item) {
+  
   let existeEnCarrito = carrito.find((x) => x.id == item.id);
   console.log(existeEnCarrito);
   const index = carrito.findIndex((x) => x.id == item.id);
   if (existeEnCarrito != undefined) {
     carrito[index].sumaStock();
+    carritoNavBar.innerHTML=carrito.length;
+    btnClickCarrito.innerHTML=`CARRITO[${carrito.length}]`;
   } else {
     carrito.push(new ObjCarrito(item.id, 1));
+    carritoNavBar.innerHTML=carrito.length;
+    btnClickCarrito.innerHTML=`CARRITO[${carrito.length}]`;
   }
+  
   console.table(carrito);
 }function calcularTotalCarrito() {
   let total = 0;
@@ -319,18 +326,15 @@ btnCarrito.addEventListener("click", () => {
 function mostrarCarrito() {
   const total = calcularTotalCarrito();
   container.innerHTML = "";
+  
   carrito.forEach((item) => {
     const card = document.createElement("div");
     card.innerHTML = `
       <div class="card col-4" style="width: 18rem;">
-        <img src="${item.imagen}" class="card-img-top" alt="${item.apodo}">
         <div class="card-body">
-          <h5 class="card-title">${item.personaje}</h5>
-          <p class="card-text">${item.interpretado_por}</p>
+          <h5 class="card-title">ID=${item.id}</h5>
         </div>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item">Apodo: ${item.apodo}</li>
-          <li class="list-group-item">${item.casaDeHogwarts}</li>
           <li class="list-group-item">Cantidad = ${item.cantidad}</li>
           <li class="list-group-item">Subtotal = ${item.cantidad * 1000}</li>
         </ul>
