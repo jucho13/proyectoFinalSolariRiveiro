@@ -15,7 +15,7 @@ function mostrarPersonajes(data,i) {
   <div class="card col-4" style="width: 18rem;">
     <img src="${data[i].imagen}" class="card-img-top" alt="${data[i].apodo}">
     <div class="card-body">
-      <h5 class="card-title">${data[i].personaje}</h5>
+      <h5 class="card-title">#${data[i].id} ${data[i].personaje}</h5>
       <p class="card-text">${data[i].interpretado_por}</p>
     </div>
     <ul class="list-group list-group-flush">
@@ -129,34 +129,3 @@ function calcularTotalCarrito() {
   return total;
 }
 
-
-// let container=document.querySelector("#container-items");
-// btnCarrito=document.querySelector("#btnClickCarrito");
-// // console.log(container);
-// btnCarrito.addEventListener("click", () => {
-//   let total=calcularTotalCarrito();
-//   container.innerHTML="";
-//   for (let i = 0; i < carrito.length; i++) {
-//       const card = document.createElement("div");
-//       card.innerHTML = `
-//           <div class="card col-4" style="width: 18rem;">
-//              <img src="${carrito[i].imagen}" class="card-img-top" alt="${carrito[i].apodo}">
-//             <div class="card-body">
-//               <h5 class="card-title">${carrito[i].personaje}</h5>
-//               <p class="card-text">${carrito[i].interpretado_por}</p>
-//             </div>
-//             <ul class="list-group list-group-flush">
-//               <li class="list-group-item">Apodo: ${carrito[i].apodo}</li>
-//               <li class="list-group-item">${carrito[i].casaDeHogwarts}</li>
-//               <li class="list-group-item">Cantidad = ${carrito[i].cantidad}</li>
-//               <li class="list-group-item">Subtotal = ${carrito[i].cantidad *1000}</li>
-//             </ul>
-//           </div>
-//         `;
-//         container.append(card);
-//     }
-//     const totalCompra = document.createElement("h2");
-//     totalCompra.innerText = `El TOTAL de su compra es de ${total}`;
-//     container.append(totalCompra);
-//   }
-// );
