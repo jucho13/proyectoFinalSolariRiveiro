@@ -40,6 +40,33 @@ header{
     margin-bottom: 20px;
     width: 600rem;
 }
-   
+footer {
+    background-color: white;
+    color: black;
+    text-align: center;
+    font-size: 30px;
+    font-family: "Lato", sans-serif;
+    text-transform: capitalize;
+    padding: 20px;
+    margin: 20px;
+}
+  
+footer a {
+    font-size: 60px;
+    letter-spacing: 10px;
+    color: #333;
+}
+  
+.subir {
+    height: 40px;
+    width: 40px;
+    background-color: black;
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    text-align: center;
+    line-height: 40px;
+    color: white;
+}   
   
   
